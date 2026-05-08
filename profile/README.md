@@ -29,7 +29,7 @@ Systems that:
 
         ## ADAAD
 
-        **ADAAD (Autonomous Device-Anchored Adaptive Development)** is the core platform developed by InnovativeAI.
+        **ADAAD (Autonomous AI-Driven App Development)** is the core platform developed by InnovativeAI.
 
         ADAAD treats software development as an autonomous, evolutionary process:
         - Agents are generated from goals
