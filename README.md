@@ -48,6 +48,13 @@ It is an autonomous production engine.
 
 ---
 
+
+## Terminology
+
+For consistency across all repositories and documentation, **ADAAD** is always expanded as **Autonomous AI-Driven App Development**.
+
+---
+
 ## What This Means
 
 ### For Engineers
