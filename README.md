@@ -1,80 +1,100 @@
-# InnovativeAI
+# Multi-Agent Orchestration Monorepo
 
-InnovativeAI builds autonomous AI systems that design, evolve, and deploy software with minimal human input.
+This repository provides a starter monorepo for building a multi-agent orchestration platform with:
 
-We exist to eliminate the bottleneck in software creation: constant human supervision.  
-Our work focuses on autonomy, execution, and durability at scale.
+- `apps/web`: React + TypeScript + Vite frontend.
+- `apps/edge-functions/orchestrate-agents`: Edge function endpoint with:
+  - `POST` orchestration session creation
+  - `GET` session search
+- `packages/shared`: Shared types/interfaces for agents, consensus metrics, and session records.
+- `packages/ui`: Reusable UI components (cards, charts, filters, panels).
 
----
+## 1) Prerequisites
 
-## Why InnovativeAI Exists
+- Node.js 20+
+- pnpm 9+
+- (Optional) Supabase CLI for local edge-function workflows
 
-Software creation is no longer constrained by ideas or compute.  
-It is constrained by human time, repetition, and manual iteration.
+## 2) Install dependencies
 
-Most AI tools assist developers. They wait for prompts, produce suggestions, and stop.
+```bash
+pnpm install
+```
 
-InnovativeAI was founded to build systems that **do not wait**.
+## 3) Configure environment variables
 
-Systems that:
-- Act continuously
-- Improve themselves
-- Validate their own outputs
-- Recover from failure
-- Produce deployable results
+Copy the sample env file and fill in values:
 
-This philosophy led to the creation of ADAAD.
+```bash
+cp .env.example .env
+```
 
----
+### Required environment variables
 
-## ADAAD
+- `VITE_API_BASE_URL`: Web app API base URL.
+- `SUPABASE_URL`: Supabase project URL.
+- `SUPABASE_ANON_KEY`: Supabase anon key.
+- `SUPABASE_SERVICE_ROLE_KEY`: Service-role key for server-side operations.
+- `DATABASE_URL`: PostgreSQL connection string.
+- `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GOOGLE_API_KEY`: Model provider keys.
 
-**ADAAD (Autonomous AI-Driven App Development)** is the core platform developed by InnovativeAI.
+## 4) Run local development
 
-ADAAD treats software development as an autonomous, evolutionary process:
-- Agents are generated from goals
-- Code is executed and evaluated
-- Failures are quarantined
-- Successful patterns are reinforced
-- Stronger variants replace weaker ones
-- Outputs are packaged into auditable artifacts
+### Run everything in parallel
 
-Human input sets direction.  
-The system handles execution.
+```bash
+pnpm dev
+```
 
-ADAAD is not a chatbot framework.  
-It is not a demo platform.  
-It is an autonomous production engine.
+### Run only web UI
 
----
+```bash
+pnpm dev:web
+```
 
+### Run only edge function
 
-## Terminology
+```bash
+pnpm dev:edge
+```
 
-For consistency across all repositories and documentation, **ADAAD** is always expanded as **Autonomous AI-Driven App Development**.
+## 5) Build and verify
 
----
+```bash
+pnpm build
+pnpm typecheck
+pnpm lint
+```
 
-## What This Means
+## 6) Deploy guidance
 
-### For Engineers
+### Web app (`apps/web`)
 
-ADAAD is built for builders who believe the future of engineering is **systems that operate without hand-holding**.
+1. Build with `pnpm --filter @apps/web build`.
+2. Deploy `apps/web/dist` to your static host (Vercel, Netlify, Cloudflare Pages, etc.).
+3. Set `VITE_API_BASE_URL` in the hosting provider environment settings.
 
-The platform prioritizes:
-- Modularity and clear boundaries
-- Deterministic failure modes
-- Safe mutation and rollback
-- Provenance and lineage tracking
-- Operation in constrained environments
+### Edge function (`apps/edge-functions/orchestrate-agents`)
 
-If it doesn’t run, it doesn’t matter.
+1. Ensure your platform has `SUPABASE_*`, provider API keys, and `DATABASE_URL` configured.
+2. Deploy with your platform workflow (e.g., Supabase functions deploy pipeline).
+3. Verify:
+   - `POST /orchestrate-agents` starts a session.
+   - `GET /orchestrate-agents?q=<search-term>` returns filtered sessions.
 
----
+## 7) Workspace layout
 
-### For Investors
+```text
+apps/
+  web/
+  edge-functions/
+    orchestrate-agents/
+packages/
+  shared/
+  ui/
+```
 
-Software is one of the highest-leverage assets in the world, yet its cost scales with human labor.
+## 8) Next recommended steps
 
 ADAAD is designed to decouple value creation from time spent:
 - Lower marginal cost of software generation
@@ -198,3 +218,7 @@ Minimum required flags:
 - `enable_payout_transfers`
 
 `enable_game_aggregation` and `enable_payout_transfers` must default to `false` until compliance controls are verified in the target environment.
+- Replace in-memory session storage with persistent DB reads/writes.
+- Add auth and session ownership checks.
+- Add charts/tables backed by real data.
+- Add unit + integration tests for function handlers and UI components.

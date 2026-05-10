@@ -1,0 +1,19 @@
+{
+  "name": "@apps/orchestrate-agents",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "supabase functions serve orchestrate-agents --env-file ../../.env",
+    "build": "echo \"Edge functions are interpreted at runtime\"",
+    "lint": "echo \"No lint configured for @apps/orchestrate-agents\"",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"No tests configured for @apps/orchestrate-agents\""
+  },
+  "dependencies": {
+    "@packages/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

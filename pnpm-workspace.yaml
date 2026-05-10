@@ -1,0 +1,4 @@
+packages:
+  - apps/*
+  - apps/edge-functions/*
+  - packages/*
