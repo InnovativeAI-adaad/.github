@@ -1,0 +1,78 @@
+{
+  "version": "1.0.0",
+  "scope": "payout_and_game_aggregation_workflows",
+  "feature_flags": {
+    "enable_game_aggregation": false,
+    "enable_payout_transfers": false,
+    "enable_verified_opportunity_listing": true,
+    "require_transfer_confirmation": true,
+    "enable_transfer_audit_log": true,
+    "block_tos_or_fraud_automation": true
+  },
+  "validation_rules": {
+    "prohibited_automation": {
+      "description": "Reject workflows that violate platform terms of service, or enable fraud, deception, abuse, or circumvention.",
+      "enforcement": "hard_block"
+    },
+    "opportunity_listing": {
+      "required_fields": [
+        "source_url",
+        "source_publisher",
+        "verification_status",
+        "risk_score"
+      ],
+      "risk_score": {
+        "range": [
+          0,
+          100
+        ],
+        "max_allowed_for_auto_list": 49,
+        "requires_manual_review_at_or_above": 50
+      },
+      "source_verification": {
+        "accepted_statuses": [
+          "verified",
+          "rejected",
+          "pending"
+        ],
+        "allow_listing_status": [
+          "verified"
+        ]
+      }
+    },
+    "payout_transfer": {
+      "require_explicit_user_confirmation": true,
+      "confirmation_fields": [
+        "user_id",
+        "destination_account_fingerprint",
+        "amount",
+        "currency",
+        "confirmation_timestamp",
+        "nonce"
+      ],
+      "confirmation_ttl_seconds": 300,
+      "on_missing_or_expired_confirmation": "reject"
+    },
+    "audit_logging": {
+      "required_events": [
+        "transfer_attempted",
+        "transfer_blocked",
+        "transfer_submitted",
+        "transfer_failed",
+        "api_action_invoked",
+        "api_action_denied"
+      ],
+      "required_fields": [
+        "event_id",
+        "event_type",
+        "timestamp",
+        "actor_id",
+        "request_id",
+        "workflow_id",
+        "risk_score",
+        "decision_reason"
+      ],
+      "retention_days": 365
+    }
+  }
+}

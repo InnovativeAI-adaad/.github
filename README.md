@@ -150,3 +150,51 @@ Phone: 1(580)823–9277
 ---
 
 © InnovativeAI. All rights reserved.
+---
+
+## Compliance Boundaries (Payout/Game Aggregation)
+
+Before enabling payout or game aggregation workflows, all implementations MUST enforce the following boundaries:
+
+### Disallowed Behavior (Hard Block)
+
+The system must reject any automation that:
+- Violates a platform's Terms of Service
+- Facilitates fraud, abuse, deception, account compromise, impersonation, or circumvention
+- Attempts unauthorized payout movement or policy evasion
+
+### Allowed Behavior (Conditionally Permitted)
+
+The system may list opportunities and orchestrate payout-adjacent operations only when all controls below pass validation.
+
+### Required Controls
+
+1. **Risk Scoring + Source Verification**
+   - Every listed opportunity must include a risk score and source metadata.
+   - Only `verified` sources may be listed.
+   - High-risk items must be blocked from auto-listing and routed to manual review.
+
+2. **Explicit User Confirmation for Transfers**
+   - Any payout transfer action requires explicit, recent, user-bound confirmation.
+   - Missing, stale, or mismatched confirmation must hard-fail the request.
+
+3. **Audit Logging for Transfers and API Actions**
+   - Log every transfer attempt, block decision, submission, and failure.
+   - Log all sensitive API actions (invoked and denied).
+   - Include actor, request, timestamp, risk, and decision reason fields.
+
+### Backend Enforcement + Feature Flags
+
+Backend services must enforce these requirements through validation gates and kill-switch flags before executing payout/game aggregation actions.
+
+Reference policy: `profile/compliance_policy.json`
+
+Minimum required flags:
+- `block_tos_or_fraud_automation`
+- `enable_verified_opportunity_listing`
+- `require_transfer_confirmation`
+- `enable_transfer_audit_log`
+- `enable_game_aggregation`
+- `enable_payout_transfers`
+
+`enable_game_aggregation` and `enable_payout_transfers` must default to `false` until compliance controls are verified in the target environment.
